@@ -1,6 +1,6 @@
 import "./App.css";
 import React from "react";
-import PropTypes from "prop-types";
+import PropTypes, { func } from "prop-types";
 
 function InputField({ name, type = "text", label }) {
   return (
@@ -25,8 +25,58 @@ function General() {
       <InputField name="firstName" label="First Name: " />
       <br />
       <InputField name="lastName" label="Last Name: " />
+      <br />
+      <InputField name="email" type="email" label="Email Address: " />
+      <br />
+      <InputField name="phone" label="Phone Number: " />
     </>
   );
 }
 
-export default General;
+function Education() {
+  return (
+    <>
+      <InputField name="school" label="School: " />
+      <br />
+      <InputField name="edTitle" label="Program of Study: " />
+      <br />
+      <InputField name="edFrom" type="date" label="From: " />
+      <br />
+      <InputField name="edTo" type="date" label="To: " />
+    </>
+  );
+}
+
+function Practical() {
+  return (
+    <>
+      <InputField name="company" label="Company: " />
+      <br />
+      <InputField name="position" label="Position: " />
+      <br />
+      <InputField
+        name="responsibility"
+        type="textarea"
+        label="Responsibilities"
+      />
+      <br />
+      <InputField name="jobFrom" type="date" label="From: " />
+      <br />
+      <InputField name="jobTo" type="date" label="To: " />
+    </>
+  );
+}
+
+function CVform() {
+  return (
+    <>
+      <General />
+      <br />
+      <Education />
+      <br />
+      <Practical />
+    </>
+  );
+}
+
+export default CVform;
