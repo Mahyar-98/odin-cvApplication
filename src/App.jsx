@@ -21,7 +21,8 @@ InputField.defaultProps = {
 
 function General() {
   return (
-    <>
+    <fieldset>
+      <legend>General Information:</legend>
       <InputField name="firstName" label="First Name: " />
       <br />
       <InputField name="lastName" label="Last Name: " />
@@ -29,41 +30,43 @@ function General() {
       <InputField name="email" type="email" label="Email Address: " />
       <br />
       <InputField name="phone" label="Phone Number: " />
-    </>
+    </fieldset>
   );
 }
 
 function Education() {
   return (
-    <>
-      <InputField name="school" label="School: " />
+    <fieldset>
+      <legend>Education:</legend>
+      <InputField name="edSchool" label="School: " />
       <br />
       <InputField name="edTitle" label="Program of Study: " />
       <br />
       <InputField name="edFrom" type="date" label="From: " />
       <br />
       <InputField name="edTo" type="date" label="To: " />
-    </>
+    </fieldset>
   );
 }
 
 function Practical() {
   return (
-    <>
-      <InputField name="company" label="Company: " />
+    <fieldset>
+      <legend>Experience:</legend>
+      <InputField name="expCompany" label="Company: " />
       <br />
-      <InputField name="position" label="Position: " />
+      <InputField name="expPosition" label="Position: " />
       <br />
       <InputField
-        name="responsibility"
+        name="expRole"
         type="textarea"
         label="Responsibilities"
       />
       <br />
-      <InputField name="jobFrom" type="date" label="From: " />
+      <InputField name="expFrom" type="date" label="From: " />
       <br />
-      <InputField name="jobTo" type="date" label="To: " />
-    </>
+      <InputField name="expTo" type="date" label="To: " />
+    </fieldset>
   );
 }
 
@@ -71,6 +74,17 @@ function CVApp() {
   const [formData, setFormData] = useState({
     firstName: "",
     lastName: "",
+    email: "",
+    phone: "",
+    edSchool: "",
+    edTitle: "",
+    edFrom: "",
+    edTo: "",
+    expCompany: "",
+    expPosition: "",
+    expRole: "",
+    expFrom: "",
+    expTo: ""
   });
   const [isEditing, setIsEditing] = useState(true);
 
@@ -99,11 +113,35 @@ function CVApp() {
       <form onSubmit={handleActionClick}>
         {isEditing ? (
           <>
-            <InputField name="firstName" label="First Name: " />
-            <InputField name="lastName" label="Last Name" />
+            <General />
+            <Education />
+            <Practical />
           </>
         ) : (
+          <>
           <h2>{`${formData.firstName} ${formData.lastName}`}</h2>
+          <p>{formData.email}</p>
+          <p>{formData.phone}</p>
+          <div className="panel">
+            <h3>Education:</h3>
+            <b>University: </b>
+            <p>{formData.edSchool}</p>
+            <b>Degree:</b>
+            <p>{formData.edTitle}</p>
+            <br />
+            <p>{formData.edFrom} to {formData.edTo}</p>
+          </div>
+          <div className="panel">
+            <h3>Experience</h3>
+            <b>Company:</b>
+            <p>{formData.expCompany}</p>
+            <b>Position:</b>
+            <p>{formData.expPosition}</p>
+            <b>Responsibilities:</b>
+            <p>{FormData.expRole}</p>
+            <p>{formData.expFrom} to {formData.expTo}</p>
+          </div>
+          </>
         )}
         <button type="submit">click me</button>
       </form>
