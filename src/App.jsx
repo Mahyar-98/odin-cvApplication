@@ -1,13 +1,13 @@
 import "./App.css";
-import React from "react";
+import React, { useState } from "react";
 import PropTypes, { func } from "prop-types";
 
 function InputField({ name, type = "text", label }) {
   return (
-    <>
-      <label htmlFor={name}>{label}</label>
-      <input name={name} id={name} type={type} />
-    </>
+    <label htmlFor={name}>
+      {label}
+      <input name={name} id={name} type={type} />{" "}
+    </label>
   );
 }
 InputField.propTypes = {
@@ -67,16 +67,48 @@ function Practical() {
   );
 }
 
-function CVform() {
+function CVApp() {
+  const [formData, setFormData] = useState({
+    firstName: "",
+    lastName: "",
+  });
+  const [isEditing, setIsEditing] = useState(true);
+
+  function handleActionClick(e) {
+    e.preventDefault();
+    if (isEditing) {
+      const eventFormData = new FormData(e.target);
+      const formDataObj = {};
+      eventFormData.forEach((value, key) => {
+        formDataObj[key] = value;
+      });
+      setFormData(formDataObj);
+    }
+    setIsEditing(!isEditing);
+  }
+
   return (
     <>
-      <General />
-      <br />
-      <Education />
-      <br />
-      <Practical />
+      <h1>CV Application</h1>
+      <p>
+        {isEditing
+          ? "Please provide your information to generate a CV: "
+          : "Here's your generated CV: "}
+      </p>
+
+      <form onSubmit={handleActionClick}>
+        {isEditing ? (
+          <>
+            <InputField name="firstName" label="First Name: " />
+            <InputField name="lastName" label="Last Name" />
+          </>
+        ) : (
+          <h2>{`${formData.firstName} ${formData.lastName}`}</h2>
+        )}
+        <button type="submit">click me</button>
+      </form>
     </>
   );
 }
 
-export default CVform;
+export default CVApp;
