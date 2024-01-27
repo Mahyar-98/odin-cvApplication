@@ -1,12 +1,12 @@
 import "./App.css";
 import React, { useState } from "react";
-import PropTypes, { func } from "prop-types";
+import PropTypes from "prop-types";
 
-function InputField({ name, type = "text", label }) {
+function InputField({ name, type = "text", label, value = null }) {
   return (
     <label htmlFor={name}>
       {label}
-      <input name={name} id={name} type={type} />{" "}
+      <input name={name} id={name} type={type} value={value} />{" "}
     </label>
   );
 }
@@ -21,8 +21,7 @@ InputField.defaultProps = {
 
 function General() {
   return (
-    <fieldset>
-      <legend>General Information:</legend>
+    <>
       <InputField name="firstName" label="First Name: " />
       <br />
       <InputField name="lastName" label="Last Name: " />
@@ -30,14 +29,13 @@ function General() {
       <InputField name="email" type="email" label="Email Address: " />
       <br />
       <InputField name="phone" label="Phone Number: " />
-    </fieldset>
+    </>
   );
 }
 
 function Education() {
   return (
-    <fieldset>
-      <legend>Education:</legend>
+    <>
       <InputField name="edSchool" label="School: " />
       <br />
       <InputField name="edTitle" label="Program of Study: " />
@@ -45,60 +43,130 @@ function Education() {
       <InputField name="edFrom" type="date" label="From: " />
       <br />
       <InputField name="edTo" type="date" label="To: " />
-    </fieldset>
+    </>
   );
 }
 
-function Practical() {
+function Practical({ data, num }) {
   return (
-    <fieldset>
-      <legend>Experience:</legend>
-      <InputField name="expCompany" label="Company: " />
-      <br />
-      <InputField name="expPosition" label="Position: " />
-      <br />
+    <>
       <InputField
-        name="expRole"
-        type="textarea"
-        label="Responsibilities"
+        name={`expCompany_${num}`}
+        label="Company: "
+        value={data.expCompany}
       />
       <br />
-      <InputField name="expFrom" type="date" label="From: " />
+      <InputField
+        name={`expPosition_${num}`}
+        label="Position: "
+        value={data.expPosition}
+      />
       <br />
-      <InputField name="expTo" type="date" label="To: " />
-    </fieldset>
+      <InputField
+        name={`expRole_${num}`}
+        type="textarea"
+        label="Responsibilities"
+        value={data.expRole}
+      />
+      <br />
+      <InputField
+        name={`expFrom_${num}`}
+        type="date"
+        label="From: "
+        value={data.expFrom}
+      />
+      <br />
+      <InputField
+        name={`expTo_${num}`}
+        type="date"
+        label="To: "
+        value={data.expTo}
+      />
+      <br />
+    </>
+  );
+}
+
+function PracticalList({ list }) {
+  return (
+    <>
+      {Object.entries(list).map(([key, value]) => (
+        <>
+          {key === "1" ? null : <hr />}
+          <Practical key={key} data={value} num={key} />
+        </>
+      ))}
+    </>
   );
 }
 
 function CVApp() {
-  const [formData, setFormData] = useState({
-    firstName: "",
-    lastName: "",
-    email: "",
-    phone: "",
+  const initialEducation = {
+    id: 1,
     edSchool: "",
     edTitle: "",
     edFrom: "",
     edTo: "",
+  };
+
+  const initialExperience = {
     expCompany: "",
     expPosition: "",
     expRole: "",
     expFrom: "",
-    expTo: ""
-  });
+    expTo: "",
+  };
+
+  const InitialFormData = {
+    firstName: "",
+    lastName: "",
+    email: "",
+    phone: "",
+    education: { 1: initialEducation },
+    experience: { 1: initialExperience },
+  };
+
+  const [formData, setFormData] = useState(InitialFormData);
+
   const [isEditing, setIsEditing] = useState(true);
 
-  function handleActionClick(e) {
+  function structureFormData(form) {
+    const eventFormData = new FormData(form);
+    const formDataObj = { education: [], experience: [] };
+    eventFormData.forEach((value, key) => {
+      if (key.substring(0, 2) === "ed") {
+        const edKey = parseInt(key.substring(key.indexOf("_") + 1), 10);
+        formDataObj.education[edKey] = value;
+      } else if (key.substring(0, 3) === "exp") {
+        const expNum = parseInt(key.substring(key.indexOf("_") + 1), 10);
+        const expKey = key.substring(0, key.indexOf("_"));
+        formDataObj.experience[expNum][expKey] = value;
+      } else {
+        formDataObj[key] = value;
+      }
+    });
+    return formDataObj;
+  }
+
+  function handleCVBuild(e) {
     e.preventDefault();
     if (isEditing) {
-      const eventFormData = new FormData(e.target);
-      const formDataObj = {};
-      eventFormData.forEach((value, key) => {
-        formDataObj[key] = value;
-      });
-      setFormData(formDataObj);
+      const newFormData = structureFormData(e.target);
+      setFormData(newFormData);
     }
     setIsEditing(!isEditing);
+  }
+
+  function handleAdd() {
+    const nextId = Math.max(...Object.keys(formData.experience)) + 1;
+    setFormData((prevFormData) => ({
+      ...prevFormData,
+      experience: {
+        ...prevFormData.experience,
+        [nextId]: initialExperience,
+      },
+    }));
+    console.log(formData);
   }
 
   return (
@@ -110,37 +178,54 @@ function CVApp() {
           : "Here's your generated CV: "}
       </p>
 
-      <form onSubmit={handleActionClick}>
+      <form onSubmit={handleCVBuild}>
         {isEditing ? (
           <>
-            <General />
-            <Education />
-            <Practical />
+            <fieldset>
+              <legend>General Information:</legend>
+              <General />
+            </fieldset>
+            <fieldset>
+              <legend>Education:</legend>
+
+              <Education />
+            </fieldset>
+            <fieldset>
+              <legend>Job Experience:</legend>
+              <PracticalList list={formData.experience} />
+              <button type="button" onClick={handleAdd}>
+                Add More
+              </button>
+            </fieldset>
           </>
         ) : (
           <>
-          <h2>{`${formData.firstName} ${formData.lastName}`}</h2>
-          <p>{formData.email}</p>
-          <p>{formData.phone}</p>
-          <div className="panel">
-            <h3>Education:</h3>
-            <b>University: </b>
-            <p>{formData.edSchool}</p>
-            <b>Degree:</b>
-            <p>{formData.edTitle}</p>
-            <br />
-            <p>{formData.edFrom} to {formData.edTo}</p>
-          </div>
-          <div className="panel">
-            <h3>Experience</h3>
-            <b>Company:</b>
-            <p>{formData.expCompany}</p>
-            <b>Position:</b>
-            <p>{formData.expPosition}</p>
-            <b>Responsibilities:</b>
-            <p>{FormData.expRole}</p>
-            <p>{formData.expFrom} to {formData.expTo}</p>
-          </div>
+            <h2>{`${formData.firstName} ${formData.lastName}`}</h2>
+            <p>{formData.email}</p>
+            <p>{formData.phone}</p>
+            <div className="panel">
+              <h3>Education:</h3>
+              <b>University: </b>
+              <p>{formData.edSchool}</p>
+              <b>Degree:</b>
+              <p>{formData.edTitle}</p>
+              <br />
+              <p>
+                {formData.edFrom} to {formData.edTo}
+              </p>
+            </div>
+            <div className="panel">
+              <h3>Experience</h3>
+              <b>Company:</b>
+              <p>{formData.expCompany}</p>
+              <b>Position:</b>
+              <p>{formData.expPosition}</p>
+              <b>Responsibilities:</b>
+              <p>{FormData.expRole}</p>
+              <p>
+                {formData.expFrom} to {formData.expTo}
+              </p>
+            </div>
           </>
         )}
         <button type="submit">click me</button>
