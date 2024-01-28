@@ -43,6 +43,7 @@ function Education() {
       <InputField name="edFrom" type="date" label="From: " />
       <br />
       <InputField name="edTo" type="date" label="To: " />
+      <br />
     </>
   );
 }
@@ -83,6 +84,19 @@ function Practical({ data, num }) {
         value={data.expTo}
       />
       <br />
+    </>
+  );
+}
+
+function EducationList({ list }) {
+  return (
+    <>
+      {Object.entries(list).map(([key, value]) => (
+        <>
+          {key === "1" ? null : <hr />}
+          <Education key={key} data={value} num={key} />
+        </>
+      ))}
     </>
   );
 }
@@ -157,15 +171,26 @@ function CVApp() {
     setIsEditing(!isEditing);
   }
 
-  function handleAdd() {
-    const nextId = Math.max(...Object.keys(formData.experience)) + 1;
-    setFormData((prevFormData) => ({
-      ...prevFormData,
-      experience: {
-        ...prevFormData.experience,
-        [nextId]: initialExperience,
-      },
-    }));
+  function handleAdd(type) {
+    if (type === "education") {
+      const nextId = Math.max(...Object.keys(formData.education)) + 1;
+      setFormData((prevFormData) => ({
+        ...prevFormData,
+        education: {
+          ...prevFormData.education,
+          [nextId]: initialEducation,
+        },
+      }));
+    } else {
+      const nextId = Math.max(...Object.keys(formData.experience)) + 1;
+      setFormData((prevFormData) => ({
+        ...prevFormData,
+        experience: {
+          ...prevFormData.experience,
+          [nextId]: initialExperience,
+        },
+      }));
+    }
     console.log(formData);
   }
 
@@ -188,12 +213,16 @@ function CVApp() {
             <fieldset>
               <legend>Education:</legend>
 
-              <Education />
+              <EducationList list={formData.education} />
+              <button type="button" onClick={() => handleAdd("education")}>
+                {" "}
+                Add More{" "}
+              </button>
             </fieldset>
             <fieldset>
               <legend>Job Experience:</legend>
               <PracticalList list={formData.experience} />
-              <button type="button" onClick={handleAdd}>
+              <button type="button" onClick={() => handleAdd("practical")}>
                 Add More
               </button>
             </fieldset>
