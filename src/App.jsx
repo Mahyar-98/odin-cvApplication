@@ -2,11 +2,11 @@ import "./App.css";
 import React, { useState } from "react";
 import PropTypes from "prop-types";
 
-function InputField({ name, type = "text", label, value = null }) {
+function InputField({ name, type = "text", label, value, handleInputChange }) {
   return (
     <label htmlFor={name}>
       {label}
-      <input name={name} id={name} type={type} value={value} />{" "}
+      <input name={name} id={name} type={type} value={value} onChange={(e)=>handleInputChange(name, e.target.value)} />{" "}
     </label>
   );
 }
@@ -14,53 +14,57 @@ InputField.propTypes = {
   name: PropTypes.string.isRequired,
   type: PropTypes.string,
   label: PropTypes.string.isRequired,
+  value: PropTypes.oneOfType([PropTypes.string, PropTypes.instanceOf(Date)]),
+  handleInputChange: PropTypes.func.isRequired
 };
 InputField.defaultProps = {
   type: "text",
 };
 
-function General() {
+function General({handleInputChange={handleInputChange}}) {
   return (
     <>
-      <InputField name="firstName" label="First Name: " />
+      <InputField name="firstName" label="First Name: " handleInputChange={handleInputChange} />
       <br />
-      <InputField name="lastName" label="Last Name: " />
+      <InputField name="lastName" label="Last Name: " handleInputChange={handleInputChange} />
       <br />
-      <InputField name="email" type="email" label="Email Address: " />
+      <InputField name="email" type="email" label="Email Address: " handleInputChange={handleInputChange} />
       <br />
-      <InputField name="phone" label="Phone Number: " />
+      <InputField name="phone" label="Phone Number: " handleInputChange={handleInputChange} />
     </>
   );
 }
 
-function Education() {
+function Education({data, num, handleInputChange={handleInputChange}}) {
   return (
     <>
-      <InputField name="edSchool" label="School: " />
+      <InputField name={`edSchool_${num}`} label="School: " value={data.edSchool} handleInputChange={handleInputChange} />
       <br />
-      <InputField name="edTitle" label="Program of Study: " />
+      <InputField name={`edTitle_${num}`} label="Program of Study: " value={data.edTitle} handleInputChange={handleInputChange} />
       <br />
-      <InputField name="edFrom" type="date" label="From: " />
+      <InputField name={`edFrom_${num}`} type="date" label="From: " value={data.edFrom} handleInputChange={handleInputChange} />
       <br />
-      <InputField name="edTo" type="date" label="To: " />
+      <InputField name={`edTo_${num}`} type="date" label="To: " value={data.edTo} handleInputChange={handleInputChange} />
       <br />
     </>
   );
 }
 
-function Practical({ data, num }) {
+function Practical({ data, num, handleInputChange }) {
   return (
     <>
       <InputField
         name={`expCompany_${num}`}
         label="Company: "
         value={data.expCompany}
+        handleInputChange={handleInputChange}
       />
       <br />
       <InputField
         name={`expPosition_${num}`}
         label="Position: "
         value={data.expPosition}
+        handleInputChange={handleInputChange}
       />
       <br />
       <InputField
@@ -68,6 +72,7 @@ function Practical({ data, num }) {
         type="textarea"
         label="Responsibilities"
         value={data.expRole}
+        handleInputChange={handleInputChange}
       />
       <br />
       <InputField
@@ -75,6 +80,7 @@ function Practical({ data, num }) {
         type="date"
         label="From: "
         value={data.expFrom}
+        handleInputChange={handleInputChange}
       />
       <br />
       <InputField
@@ -82,32 +88,33 @@ function Practical({ data, num }) {
         type="date"
         label="To: "
         value={data.expTo}
+        handleInputChange={handleInputChange}
       />
       <br />
     </>
   );
 }
 
-function EducationList({ list }) {
+function EducationList({ list, handleInputChange }) {
   return (
     <>
       {Object.entries(list).map(([key, value]) => (
         <>
           {key === "1" ? null : <hr />}
-          <Education key={key} data={value} num={key} />
+          <Education key={key} data={value} num={key} handleInputChange={handleInputChange} />
         </>
       ))}
     </>
   );
 }
 
-function PracticalList({ list }) {
+function PracticalList({ list, handleInputChange}) {
   return (
     <>
       {Object.entries(list).map(([key, value]) => (
         <>
           {key === "1" ? null : <hr />}
-          <Practical key={key} data={value} num={key} />
+          <Practical key={key} data={value} num={key} handleInputChange={handleInputChange} />
         </>
       ))}
     </>
@@ -143,6 +150,43 @@ function CVApp() {
   const [formData, setFormData] = useState(InitialFormData);
 
   const [isEditing, setIsEditing] = useState(true);
+
+  const handleInputChange = (name, value) => {
+    console.log(`This is the name: ${name} and the value: ${value}`)
+    if (name.substring(0,2) === "ed") {
+      const edNum = parseInt(name.substring(name.indexOf("_") + 1), 10);
+      const edKey = name.substring(0, name.indexOf('_'));
+      setFormData({
+        ...formData,
+        education: {
+          ...formData.education,
+          [edNum]:{
+            ...formData.education[edNum],
+            [edKey] : value
+          }
+        }
+      })
+    } else if (name.substring(0,3) === "exp") {
+      const expNum = parseInt(name.substring(name.indexOf("_") + 1), 10);
+      const expKey = name.substring(0, name.indexOf("_"));
+      console.log(expKey)
+      setFormData({
+        ...formData,
+        experience: {
+          ...formData.experience,
+          [expNum]:{
+            ...formData.experience[expNum],
+            [expKey] : value
+          }
+        }
+      })
+    } else {
+      setFormData({
+        ...formData,
+        [name]: value
+      })
+    }
+  }
 
   function structureFormData(form) {
     const eventFormData = new FormData(form);
@@ -208,12 +252,12 @@ function CVApp() {
           <>
             <fieldset>
               <legend>General Information:</legend>
-              <General />
+              <General handleInputChange={handleInputChange} />
             </fieldset>
             <fieldset>
               <legend>Education:</legend>
 
-              <EducationList list={formData.education} />
+              <EducationList list={formData.education} handleInputChange={handleInputChange} />
               <button type="button" onClick={() => handleAdd("education")}>
                 {" "}
                 Add More{" "}
@@ -221,7 +265,7 @@ function CVApp() {
             </fieldset>
             <fieldset>
               <legend>Job Experience:</legend>
-              <PracticalList list={formData.experience} />
+              <PracticalList list={formData.experience} handleInputChange={handleInputChange} />
               <button type="button" onClick={() => handleAdd("practical")}>
                 Add More
               </button>
