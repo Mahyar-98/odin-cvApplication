@@ -1,19 +1,29 @@
 import "./App.css";
 import React, { useState } from "react";
 import PropTypes from "prop-types";
-import { v4 as uuidv4 } from "uuid";
 
 function InputField({ name, type = "text", label, value, handleInputChange }) {
   return (
     <label htmlFor={name}>
       {label}
-      <input
-        name={name}
-        id={name}
-        type={type}
-        value={value}
-        onChange={(e) => handleInputChange(name, e.target.value)}
-      />{" "}
+      {type === "textarea" ? (
+        <textarea
+          name={name}
+          id={name}
+          value={value}
+          onChange={(e) => handleInputChange(name, e.target.value)}
+          cols="30"
+          rows="5"
+        />
+      ) : (
+        <input
+          name={name}
+          id={name}
+          type={type}
+          value={value}
+          onChange={(e) => handleInputChange(name, e.target.value)}
+        />
+      )}{" "}
     </label>
   );
 }
@@ -119,7 +129,8 @@ function Practical({ data, num, handleInputChange }) {
     },
     {
       name: `expRole_${num}`,
-      label: "Responsibilities",
+      type: "textarea",
+      label: "Responsibilities: ",
       value: data.expRole,
     },
     {
@@ -237,19 +248,19 @@ function CVApp() {
     }
   };
 
-  function structureFormData(form) {
+  function handleFormData(form) {
     const eventFormData = new FormData(form);
     const formDataObj = { education: {}, experience: {} };
     eventFormData.forEach((value, key) => {
       if (key.substring(0, 2) === "ed") {
         const edNum = parseInt(key.substring(key.indexOf("_") + 1), 10);
         const edKey = key.substring(0, key.indexOf("_"));
-        formDataObj.education[edNum] = formDataObj.education[edNum] || {}
+        formDataObj.education[edNum] = formDataObj.education[edNum] || {};
         formDataObj.education[edNum][edKey] = value;
       } else if (key.substring(0, 3) === "exp") {
         const expNum = parseInt(key.substring(key.indexOf("_") + 1), 10);
         const expKey = key.substring(0, key.indexOf("_"));
-        formDataObj.experience[expNum] = formDataObj.experience[expNum] || {}
+        formDataObj.experience[expNum] = formDataObj.experience[expNum] || {};
         formDataObj.experience[expNum][expKey] = value;
       } else {
         formDataObj[key] = value;
@@ -261,7 +272,7 @@ function CVApp() {
   function handleCVBuild(e) {
     e.preventDefault();
     if (isEditing) {
-      const newFormData = structureFormData(e.target);
+      const newFormData = handleFormData(e.target);
       setFormData(newFormData);
     }
     setIsEditing(!isEditing);
@@ -359,7 +370,7 @@ function CVApp() {
             </div>
           </>
         )}
-        <button type="submit">{isEditing ? 'Generate' : 'Edit'}</button>
+        <button type="submit">{isEditing ? "Generate" : "Edit"}</button>
       </form>
     </>
   );
