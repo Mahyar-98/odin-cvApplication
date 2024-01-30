@@ -1,12 +1,19 @@
 import "./App.css";
 import React, { useState } from "react";
 import PropTypes from "prop-types";
+import { v4 as uuidv4 } from "uuid";
 
 function InputField({ name, type = "text", label, value, handleInputChange }) {
   return (
     <label htmlFor={name}>
       {label}
-      <input name={name} id={name} type={type} value={value} onChange={(e)=>handleInputChange(name, e.target.value)} />{" "}
+      <input
+        name={name}
+        id={name}
+        type={type}
+        value={value}
+        onChange={(e) => handleInputChange(name, e.target.value)}
+      />{" "}
     </label>
   );
 }
@@ -15,110 +22,155 @@ InputField.propTypes = {
   type: PropTypes.string,
   label: PropTypes.string.isRequired,
   value: PropTypes.oneOfType([PropTypes.string, PropTypes.instanceOf(Date)]),
-  handleInputChange: PropTypes.func.isRequired
+  handleInputChange: PropTypes.func.isRequired,
 };
 InputField.defaultProps = {
   type: "text",
 };
 
-function General({handleInputChange={handleInputChange}}) {
-  return (
-    <>
-      <InputField name="firstName" label="First Name: " handleInputChange={handleInputChange} />
+function General({ data, handleInputChange }) {
+  const generalInfo = [
+    {
+      name: "firstName",
+      label: "First Name: ",
+      value: data.firstName,
+    },
+    {
+      name: "lastName",
+      label: "Last Name: ",
+      value: data.lastName,
+    },
+    {
+      name: "email",
+      label: "Email Address: ",
+      value: data.email,
+    },
+    { name: "phone", label: "Phone Number: ", value: data.phone },
+  ];
+
+  const generalSection = generalInfo.map((item) => (
+    <React.Fragment key={item.name}>
+      <InputField
+        name={item.name}
+        label={item.label}
+        value={item.value}
+        handleInputChange={handleInputChange}
+      />
       <br />
-      <InputField name="lastName" label="Last Name: " handleInputChange={handleInputChange} />
-      <br />
-      <InputField name="email" type="email" label="Email Address: " handleInputChange={handleInputChange} />
-      <br />
-      <InputField name="phone" label="Phone Number: " handleInputChange={handleInputChange} />
-    </>
-  );
+    </React.Fragment>
+  ));
+
+  return <> {generalSection} </>;
 }
 
-function Education({data, num, handleInputChange={handleInputChange}}) {
-  return (
-    <>
-      <InputField name={`edSchool_${num}`} label="School: " value={data.edSchool} handleInputChange={handleInputChange} />
+function Education({ data, num, handleInputChange = { handleInputChange } }) {
+  const educationInfo = [
+    {
+      name: `edSchool_${num}`,
+      label: "School: ",
+      value: data.edSchool,
+    },
+    {
+      name: `edTitle_${num}`,
+      label: "Program of Study: ",
+      value: data.edTitle,
+    },
+    {
+      name: `edFrom_${num}`,
+      type: "date",
+      label: "From: ",
+      value: data.edFrom,
+    },
+    {
+      name: `edTo_${num}`,
+      type: "date",
+      label: "To: ",
+      value: data.edTo,
+    },
+  ];
+
+  const educationSection = educationInfo.map((item) => (
+    <React.Fragment key={item.name}>
+      <InputField
+        name={item.name}
+        type={item.type}
+        label={item.label}
+        value={item.value}
+        handleInputChange={handleInputChange}
+      />
       <br />
-      <InputField name={`edTitle_${num}`} label="Program of Study: " value={data.edTitle} handleInputChange={handleInputChange} />
-      <br />
-      <InputField name={`edFrom_${num}`} type="date" label="From: " value={data.edFrom} handleInputChange={handleInputChange} />
-      <br />
-      <InputField name={`edTo_${num}`} type="date" label="To: " value={data.edTo} handleInputChange={handleInputChange} />
-      <br />
-    </>
-  );
+    </React.Fragment>
+  ));
+
+  return <> {educationSection} </>;
 }
 
 function Practical({ data, num, handleInputChange }) {
-  return (
-    <>
+  const practicalInfo = [
+    {
+      name: `expCompany_${num}`,
+      label: "Company: ",
+      value: data.expCompany,
+    },
+    {
+      name: `expPosition_${num}`,
+      label: "Position: ",
+      value: data.expPosition,
+    },
+    {
+      name: `expRole_${num}`,
+      label: "Responsibilities",
+      value: data.expRole,
+    },
+    {
+      name: `expFrom_${num}`,
+      type: "date",
+      label: "From: ",
+      value: data.expFrom,
+    },
+    {
+      name: `expTo_${num}`,
+      type: "date",
+      label: "To: ",
+      value: data.expTo,
+    },
+  ];
+
+  const practicalSection = practicalInfo.map((item) => (
+    <React.Fragment key={item.name}>
       <InputField
-        name={`expCompany_${num}`}
-        label="Company: "
-        value={data.expCompany}
+        name={item.name}
+        type={item.type}
+        label={item.label}
+        value={item.value}
         handleInputChange={handleInputChange}
       />
       <br />
-      <InputField
-        name={`expPosition_${num}`}
-        label="Position: "
-        value={data.expPosition}
-        handleInputChange={handleInputChange}
-      />
-      <br />
-      <InputField
-        name={`expRole_${num}`}
-        type="textarea"
-        label="Responsibilities"
-        value={data.expRole}
-        handleInputChange={handleInputChange}
-      />
-      <br />
-      <InputField
-        name={`expFrom_${num}`}
-        type="date"
-        label="From: "
-        value={data.expFrom}
-        handleInputChange={handleInputChange}
-      />
-      <br />
-      <InputField
-        name={`expTo_${num}`}
-        type="date"
-        label="To: "
-        value={data.expTo}
-        handleInputChange={handleInputChange}
-      />
-      <br />
-    </>
-  );
+    </React.Fragment>
+  ));
+  return <> {practicalSection} </>;
 }
 
-function EducationList({ list, handleInputChange }) {
-  return (
-    <>
-      {Object.entries(list).map(([key, value]) => (
-        <>
-          {key === "1" ? null : <hr />}
-          <Education key={key} data={value} num={key} handleInputChange={handleInputChange} />
-        </>
-      ))}
-    </>
-  );
-}
-
-function PracticalList({ list, handleInputChange}) {
-  return (
-    <>
-      {Object.entries(list).map(([key, value]) => (
-        <>
-          {key === "1" ? null : <hr />}
-          <Practical key={key} data={value} num={key} handleInputChange={handleInputChange} />
-        </>
-      ))}
-    </>
-  );
+function SectionList({ type, list, handleInputChange }) {
+  const sectionList = Object.entries(list).map(([key, value]) => (
+    <React.Fragment key={key}>
+      {key === "1" ? null : <hr />}
+      {type === "education" ? (
+        <Education
+          data={value}
+          num={key}
+          handleInputChange={handleInputChange}
+        />
+      ) : (
+        <Practical
+          data={value}
+          num={key}
+          handleInputChange={handleInputChange}
+        />
+      )}
+    </React.Fragment>
+  ));
+  return <> {sectionList} </>;
 }
 
 function CVApp() {
@@ -148,56 +200,56 @@ function CVApp() {
   };
 
   const [formData, setFormData] = useState(InitialFormData);
-
   const [isEditing, setIsEditing] = useState(true);
 
   const handleInputChange = (name, value) => {
-    console.log(`This is the name: ${name} and the value: ${value}`)
-    if (name.substring(0,2) === "ed") {
+    if (name.substring(0, 2) === "ed") {
       const edNum = parseInt(name.substring(name.indexOf("_") + 1), 10);
-      const edKey = name.substring(0, name.indexOf('_'));
+      const edKey = name.substring(0, name.indexOf("_"));
       setFormData({
         ...formData,
         education: {
           ...formData.education,
-          [edNum]:{
+          [edNum]: {
             ...formData.education[edNum],
-            [edKey] : value
-          }
-        }
-      })
-    } else if (name.substring(0,3) === "exp") {
+            [edKey]: value,
+          },
+        },
+      });
+    } else if (name.substring(0, 3) === "exp") {
       const expNum = parseInt(name.substring(name.indexOf("_") + 1), 10);
       const expKey = name.substring(0, name.indexOf("_"));
-      console.log(expKey)
       setFormData({
         ...formData,
         experience: {
           ...formData.experience,
-          [expNum]:{
+          [expNum]: {
             ...formData.experience[expNum],
-            [expKey] : value
-          }
-        }
-      })
+            [expKey]: value,
+          },
+        },
+      });
     } else {
       setFormData({
         ...formData,
-        [name]: value
-      })
+        [name]: value,
+      });
     }
-  }
+  };
 
   function structureFormData(form) {
     const eventFormData = new FormData(form);
-    const formDataObj = { education: [], experience: [] };
+    const formDataObj = { education: {}, experience: {} };
     eventFormData.forEach((value, key) => {
       if (key.substring(0, 2) === "ed") {
-        const edKey = parseInt(key.substring(key.indexOf("_") + 1), 10);
-        formDataObj.education[edKey] = value;
+        const edNum = parseInt(key.substring(key.indexOf("_") + 1), 10);
+        const edKey = key.substring(0, key.indexOf("_"));
+        formDataObj.education[edNum] = formDataObj.education[edNum] || {}
+        formDataObj.education[edNum][edKey] = value;
       } else if (key.substring(0, 3) === "exp") {
         const expNum = parseInt(key.substring(key.indexOf("_") + 1), 10);
         const expKey = key.substring(0, key.indexOf("_"));
+        formDataObj.experience[expNum] = formDataObj.experience[expNum] || {}
         formDataObj.experience[expNum][expKey] = value;
       } else {
         formDataObj[key] = value;
@@ -235,7 +287,6 @@ function CVApp() {
         },
       }));
     }
-    console.log(formData);
   }
 
   return (
@@ -252,20 +303,27 @@ function CVApp() {
           <>
             <fieldset>
               <legend>General Information:</legend>
-              <General handleInputChange={handleInputChange} />
+              <General data={formData} handleInputChange={handleInputChange} />
             </fieldset>
             <fieldset>
               <legend>Education:</legend>
 
-              <EducationList list={formData.education} handleInputChange={handleInputChange} />
+              <SectionList
+                type="education"
+                list={formData.education}
+                handleInputChange={handleInputChange}
+              />
               <button type="button" onClick={() => handleAdd("education")}>
-                {" "}
-                Add More{" "}
+                Add More
               </button>
             </fieldset>
             <fieldset>
               <legend>Job Experience:</legend>
-              <PracticalList list={formData.experience} handleInputChange={handleInputChange} />
+              <SectionList
+                type="practical"
+                list={formData.experience}
+                handleInputChange={handleInputChange}
+              />
               <button type="button" onClick={() => handleAdd("practical")}>
                 Add More
               </button>
@@ -301,7 +359,7 @@ function CVApp() {
             </div>
           </>
         )}
-        <button type="submit">click me</button>
+        <button type="submit">{isEditing ? 'Generate' : 'Edit'}</button>
       </form>
     </>
   );
