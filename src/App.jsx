@@ -184,6 +184,49 @@ function SectionList({ type, list, handleInputChange }) {
   return <> {sectionList} </>;
 }
 
+function ShowSection({ type = "general", list }) {
+  const renderSectionDetails = (data) => {
+    if (type === "education") {
+      return (
+        <>
+          <b>University: </b>
+          <p>{data.edSchool}</p>
+          <br />
+          <b>Degree: </b>
+          <p>{data.edTitle}</p>
+          <br />
+          <p>
+            {data.edFrom} to {data.edTo}
+          </p>
+          <br />
+        </>
+      );
+    }
+    if (type === "practical") {
+      return (
+        <>
+          <b>Company:</b>
+          <p>{data.expCompany}</p>
+          <b>Position:</b>
+          <p>{data.expPosition}</p>
+          <b>Responsibilities:</b>
+          <p>{data.expRole}</p>
+          <p>
+            {data.expFrom} to {data.expTo}
+          </p>
+        </>
+      );
+    }
+    return null;
+  };
+
+  const sectionItems = Object.entries(list).map(([num, data]) => (
+    <React.Fragment key={num}>{renderSectionDetails(data)}</React.Fragment>
+  ));
+
+  return <> {sectionItems} </>;
+}
+
 function CVApp() {
   const initialEducation = {
     id: 1,
@@ -347,26 +390,11 @@ function CVApp() {
             <p>{formData.phone}</p>
             <div className="panel">
               <h3>Education:</h3>
-              <b>University: </b>
-              <p>{formData.edSchool}</p>
-              <b>Degree:</b>
-              <p>{formData.edTitle}</p>
-              <br />
-              <p>
-                {formData.edFrom} to {formData.edTo}
-              </p>
+              <ShowSection type="education" list={formData.education} />
             </div>
             <div className="panel">
               <h3>Experience</h3>
-              <b>Company:</b>
-              <p>{formData.expCompany}</p>
-              <b>Position:</b>
-              <p>{formData.expPosition}</p>
-              <b>Responsibilities:</b>
-              <p>{FormData.expRole}</p>
-              <p>
-                {formData.expFrom} to {formData.expTo}
-              </p>
+              <ShowSection type="practical" list={formData.experience} />
             </div>
           </>
         )}
