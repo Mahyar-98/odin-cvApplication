@@ -1,4 +1,6 @@
 import React from "react";
+import PropTypes from "prop-types";
+
 import InputField from "./InputField.jsx";
 
 export default function Practical({ data, num, handleInputChange }) {
@@ -47,3 +49,15 @@ export default function Practical({ data, num, handleInputChange }) {
   ));
   return <> {practicalSection} </>;
 }
+
+Practical.propTypes = {
+  data: PropTypes.shape({
+    expCompany: PropTypes.string.isRequired,
+    expPosition: PropTypes.string.isRequired,
+    expRole: PropTypes.string.isRequired,
+    expFrom: PropTypes.string.isRequired,
+    expTo: PropTypes.string.isRequired,
+  }).isRequired,
+  num: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
+  handleInputChange: PropTypes.func.isRequired,
+};

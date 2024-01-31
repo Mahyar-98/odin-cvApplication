@@ -1,6 +1,7 @@
 import React from "react";
+import PropTypes from "prop-types";
 
-export default function ShowSection({ type = "general", list }) {
+export default function ShowSection({ type, list }) {
   const renderSectionDetails = (data) => {
     if (type === "education") {
       return (
@@ -42,3 +43,20 @@ export default function ShowSection({ type = "general", list }) {
 
   return <> {sectionItems} </>;
 }
+
+ShowSection.propTypes = {
+  type: PropTypes.oneOf(["education", "practical"]).isRequired,
+  list: PropTypes.objectOf(
+    PropTypes.shape({
+      edSchool: PropTypes.string,
+      edTitle: PropTypes.string,
+      edFrom: PropTypes.string,
+      edTo: PropTypes.string,
+      expCompany: PropTypes.string,
+      expPosition: PropTypes.string,
+      expRole: PropTypes.string,
+      expFrom: PropTypes.string,
+      expTo: PropTypes.string,
+    }),
+  ).isRequired,
+};

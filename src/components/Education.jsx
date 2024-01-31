@@ -1,11 +1,9 @@
 import React from "react";
+import PropTypes from "prop-types";
+
 import InputField from "./InputField.jsx";
 
-export default function Education({
-  data,
-  num,
-  handleInputChange = { handleInputChange },
-}) {
+export default function Education({ data, num, handleInputChange }) {
   const educationInfo = [
     {
       name: `edSchool_${num}`,
@@ -46,3 +44,14 @@ export default function Education({
 
   return <> {educationSection} </>;
 }
+
+Education.propTypes = {
+  data: PropTypes.shape({
+    edSchool: PropTypes.string.isRequired,
+    edTitle: PropTypes.string.isRequired,
+    edFrom: PropTypes.string.isRequired,
+    edTo: PropTypes.string.isRequired,
+  }).isRequired,
+  num: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
+  handleInputChange: PropTypes.func.isRequired,
+};

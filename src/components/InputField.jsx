@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 
 export default function InputField({
   name,
-  type = "text",
+  type,
   label,
   value,
   handleInputChange,
@@ -32,6 +32,7 @@ export default function InputField({
     </label>
   );
 }
+
 InputField.propTypes = {
   name: PropTypes.string.isRequired,
   type: PropTypes.string,
@@ -39,6 +40,8 @@ InputField.propTypes = {
   value: PropTypes.oneOfType([PropTypes.string, PropTypes.instanceOf(Date)]),
   handleInputChange: PropTypes.func.isRequired,
 };
+
 InputField.defaultProps = {
   type: "text",
+  value: "",
 };

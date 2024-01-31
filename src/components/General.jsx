@@ -1,4 +1,5 @@
 import React from "react";
+import PropTypes from "prop-types";
 import InputField from "./InputField.jsx";
 
 export default function General({ data, handleInputChange }) {
@@ -35,3 +36,13 @@ export default function General({ data, handleInputChange }) {
 
   return <> {generalSection} </>;
 }
+
+General.propTypes = {
+  data: PropTypes.shape({
+    firstName: PropTypes.string.isRequired,
+    lastName: PropTypes.string.isRequired,
+    email: PropTypes.string.isRequired,
+    phone: PropTypes.string.isRequired,
+  }).isRequired,
+  handleInputChange: PropTypes.func.isRequired,
+};
