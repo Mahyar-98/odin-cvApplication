@@ -134,15 +134,10 @@ function CVApp() {
       <header>
         <h1>CV Application</h1>
       </header>
-      <p>
-        {isEditing
-          ? "Please provide your information to generate a CV: "
-          : "Here's your generated CV: "}
-      </p>
-
       <form onSubmit={handleCVBuild}>
         {isEditing ? (
           <>
+          <p>Please provide your information to generate a CV: </p>
             <fieldset>
               <legend>General Information:</legend>
               <General data={formData} handleInputChange={handleInputChange} />
@@ -174,6 +169,7 @@ function CVApp() {
           </>
         ) : (
           <>
+          <p>Here is your generated CV: </p>
             <h2>{`${formData.firstName} ${formData.lastName}`}</h2>
             <p>{formData.email}</p>
             <p>{formData.phone}</p>
@@ -189,7 +185,7 @@ function CVApp() {
             </div>
           </>
         )}
-        <button type="submit">{isEditing ? "Generate" : "Edit"}</button>
+        <button className="submit-btn" type="submit">{isEditing ? "Generate" : "Edit"}</button>
       </form>
     </>
   );

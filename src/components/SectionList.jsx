@@ -1,8 +1,10 @@
 import React from "react";
 import PropTypes from "prop-types";
 
+import removeIcon from "../assets/remove_icon.png"
 import Education from "./Education.jsx";
 import Practical from "./Practical.jsx";
+
 
 export default function SectionList({
   type,
@@ -26,10 +28,11 @@ export default function SectionList({
           handleInputChange={handleInputChange}
         />
       )}
-      {key === "1" ? null : (
-        <button type="button" onClick={() => handleRemoveField(type, key)}>
-          Remove
+      {key === "1" ? null : (<>
+        <button className="remove-button" type="button" onClick={() => handleRemoveField(type, key)}>
+          <img className="icon" src={removeIcon} alt="remove icon" />
         </button>
+        <br /></>
       )}
     </React.Fragment>
   ));

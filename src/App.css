@@ -1,6 +1,66 @@
 #root {
   max-width: 1280px;
+  width: 90vw;
   margin: 0 auto;
   padding: 2rem;
   text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+}
+
+header {
+
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  align-items: center;
+  gap: 20px;
+}
+
+fieldset {
+  width: 80%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  align-items: stretch;
+  padding: 20px;
+}
+
+legend {
+  font-size: 18pt;
+  font-weight: 600;
+}
+
+label {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+input, textarea {
+  flex: 1;
+}
+
+button {
+  align-self: center;
+}
+
+hr {
+  border: 1px solid rgb(126, 125, 125);
+  margin: 10px 0 30px 0;
+}
+
+.icon {
+  width: 30px;
+  height: auto;
+}
+
+.remove-button {
+  padding: 5px;
+  background-color: white;
 }
