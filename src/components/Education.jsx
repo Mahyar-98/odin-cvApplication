@@ -47,10 +47,10 @@ export default function Education({ data, num, handleInputChange }) {
 
 Education.propTypes = {
   data: PropTypes.shape({
-    edSchool: PropTypes.string.isRequired,
-    edTitle: PropTypes.string.isRequired,
-    edFrom: PropTypes.string.isRequired,
-    edTo: PropTypes.string.isRequired,
+    edSchool: PropTypes.string,
+    edTitle: PropTypes.string,
+    edFrom: PropTypes.string,
+    edTo: PropTypes.string,
   }).isRequired,
   num: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
   handleInputChange: PropTypes.func.isRequired,

@@ -2,9 +2,9 @@ import React, { useState } from "react";
 
 import "./App.css";
 
-import General from './components/General.jsx'
-import SectionList from './components/SectionList.jsx'
-import ShowSection from './components/ShowSection.jsx'
+import General from "./components/General.jsx";
+import SectionList from "./components/SectionList.jsx";
+import ShowSection from "./components/ShowSection.jsx";
 
 function CVApp() {
   const initialEducation = {
@@ -68,6 +68,13 @@ function CVApp() {
         [name]: value,
       });
     }
+  };
+
+  const handleRemoveField = (type, num) => {
+    const remainingFields = Object.fromEntries(
+      Object.entries(formData[type]).filter((pair) => pair[0] !== num),
+    );
+    setFormData({ ...formData, [type]: remainingFields });
   };
 
   function handleFormData(form) {
@@ -147,6 +154,7 @@ function CVApp() {
                 type="education"
                 list={formData.education}
                 handleInputChange={handleInputChange}
+                handleRemoveField={handleRemoveField}
               />
               <button type="button" onClick={() => handleAdd("education")}>
                 Add More
@@ -158,6 +166,7 @@ function CVApp() {
                 type="practical"
                 list={formData.experience}
                 handleInputChange={handleInputChange}
+                handleRemoveField={handleRemoveField}
               />
               <button type="button" onClick={() => handleAdd("practical")}>
                 Add More

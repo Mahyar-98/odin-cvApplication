@@ -4,7 +4,12 @@ import PropTypes from "prop-types";
 import Education from "./Education.jsx";
 import Practical from "./Practical.jsx";
 
-export default function SectionList({ type, list, handleInputChange }) {
+export default function SectionList({
+  type,
+  list,
+  handleInputChange,
+  handleRemoveField,
+}) {
   const sectionList = Object.entries(list).map(([key, value]) => (
     <React.Fragment key={key}>
       {key === "1" ? null : <hr />}
@@ -20,6 +25,11 @@ export default function SectionList({ type, list, handleInputChange }) {
           num={key}
           handleInputChange={handleInputChange}
         />
+      )}
+      {key === "1" ? null : (
+        <button type="button" onClick={() => handleRemoveField(type, key)}>
+          Remove
+        </button>
       )}
     </React.Fragment>
   ));
@@ -48,4 +58,5 @@ SectionList.propTypes = {
     ),
   ]).isRequired,
   handleInputChange: PropTypes.func.isRequired,
+  handleRemoveField: PropTypes.func.isRequired,
 };
