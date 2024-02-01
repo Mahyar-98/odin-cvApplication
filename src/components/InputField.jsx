@@ -15,10 +15,11 @@ export default function InputField({
         <textarea
           name={name}
           id={name}
-          value={value}
+          value={value || ""}
           onChange={(e) => handleInputChange(name, e.target.value)}
           cols="30"
           rows="5"
+          placeholder="Please provide the information comma separated"
         />
       ) : (
         <input

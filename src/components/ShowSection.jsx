@@ -2,6 +2,16 @@ import React from "react";
 import PropTypes from "prop-types";
 
 export default function ShowSection({ type, list }) {
+  const structureRoles = (text) => {
+    const rolesArr = text.split(",")
+    const roleItems = rolesArr.map(item => (
+      <li key={item}>
+        {item}
+      </li>
+    ))
+      return <ul>{roleItems}</ul>
+  }
+
   const renderSectionDetails = (data) => {
     if (type === "education") {
       return (
@@ -27,7 +37,7 @@ export default function ShowSection({ type, list }) {
           <b>Position:</b>
           <p>{data.expPosition}</p>
           <b>Responsibilities:</b>
-          <p>{data.expRole}</p>
+          {structureRoles(data.expRole)}
           <p>
             {data.expFrom} to {data.expTo}
           </p>
