@@ -37,7 +37,7 @@ export default function SectionList({
 }
 
 SectionList.propTypes = {
-  type: PropTypes.oneOf(["education", "practical"]).isRequired,
+  type: PropTypes.oneOf(["education", "experience"]).isRequired,
   list: PropTypes.oneOfType([
     PropTypes.objectOf(
       PropTypes.shape({

@@ -149,7 +149,6 @@ function CVApp() {
             </fieldset>
             <fieldset>
               <legend>Education:</legend>
-
               <SectionList
                 type="education"
                 list={formData.education}
@@ -163,7 +162,7 @@ function CVApp() {
             <fieldset>
               <legend>Job Experience:</legend>
               <SectionList
-                type="practical"
+                type="experience"
                 list={formData.experience}
                 handleInputChange={handleInputChange}
                 handleRemoveField={handleRemoveField}
