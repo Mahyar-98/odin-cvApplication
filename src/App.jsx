@@ -139,11 +139,11 @@ function CVApp() {
           <>
           <p>Please provide your information to generate a CV: </p>
             <fieldset>
-              <legend>General Information:</legend>
+              <legend>General Information</legend>
               <General data={formData} handleInputChange={handleInputChange} />
             </fieldset>
             <fieldset>
-              <legend>Education:</legend>
+              <legend>Education</legend>
               <SectionList
                 type="education"
                 list={formData.education}
@@ -155,7 +155,7 @@ function CVApp() {
               </button>
             </fieldset>
             <fieldset>
-              <legend>Job Experience:</legend>
+              <legend>Job Experience</legend>
               <SectionList
                 type="experience"
                 list={formData.experience}
@@ -170,18 +170,24 @@ function CVApp() {
         ) : (
           <>
           <p>Here is your generated CV: </p>
+          <div className="CV">
+            <div className="general">
             <h2>{`${formData.firstName} ${formData.lastName}`}</h2>
+            <div className="contactInfo">
             <p>{formData.email}</p>
             <p>{formData.phone}</p>
+            </div>
+            </div>
             <div className="panel">
-              <h3>Education:</h3>
+              <h3>Education</h3>
               <hr />
-              <ShowSection type="education" list={formData.education} />
+              <ShowSection className="edSection" type="education" list={formData.education} />
             </div>
             <div className="panel">
               <h3>Experience</h3>
               <hr />
               <ShowSection type="practical" list={formData.experience} />
+            </div>
             </div>
           </>
         )}

@@ -9,39 +9,35 @@ export default function ShowSection({ type, list }) {
         {item}
       </li>
     ))
-      return <ul>{roleItems}</ul>
+      return <ul className="expRole">{roleItems}</ul>
   }
 
   const renderSectionDetails = (data) => {
     if (type === "education") {
       return (
-        <>
-          <b>University: </b>
-          <p>{data.edSchool}</p>
-          <br />
-          <b>Degree: </b>
-          <p>{data.edTitle}</p>
-          <br />
-          <p>
+        <div className="edSection">
+        <div className="edLeft">
+          <p className="edSchool">{data.edSchool}</p>
+          <p className="edTitle">{data.edTitle}</p>
+          </div>
+          <p className="edDate">
             {data.edFrom} to {data.edTo}
           </p>
-          <br />
-        </>
+        </div>
       );
     }
     if (type === "practical") {
       return (
-        <>
-          <b>Company:</b>
-          <p>{data.expCompany}</p>
-          <b>Position:</b>
+        <div className="expSection">
+          <div className="expLeft">
+          <p className="expCompany">{data.expCompany}</p>
           <p>{data.expPosition}</p>
-          <b>Responsibilities:</b>
           {structureRoles(data.expRole)}
+          </div>
           <p>
             {data.expFrom} to {data.expTo}
           </p>
-        </>
+        </div>
       );
     }
     return null;
@@ -51,7 +47,7 @@ export default function ShowSection({ type, list }) {
     <React.Fragment key={num}>{renderSectionDetails(data)}</React.Fragment>
   ));
 
-  return <> {sectionItems} </>;
+  return <div className="section"> {sectionItems} </div>;
 }
 
 ShowSection.propTypes = {

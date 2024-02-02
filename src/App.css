@@ -9,15 +9,11 @@
   align-items: stretch;
 }
 
-header {
-
-}
-
 form {
   display: flex;
   flex-direction: column;
   justify-content: space-around;
-  align-items: center;
+  align-items: stretch;
   gap: 20px;
 }
 
@@ -28,6 +24,7 @@ fieldset {
   justify-content: space-around;
   align-items: stretch;
   padding: 20px;
+  align-self: center;
 }
 
 legend {
@@ -63,4 +60,85 @@ hr {
 .remove-button {
   padding: 5px;
   background-color: white;
+}
+
+
+
+.CV {
+  align-self: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: stretch;
+  gap: 20px;
+  border: 2px solid #000;
+  padding: 40px;
+}
+
+.panel {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: stretch;
+}
+
+.CV h3 {
+  font-size: 18pt;
+  margin-bottom: 0px;
+  align-self: flex-start;
+}
+
+div.general {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  align-items: center;
+}
+
+div.general h2 {
+  font-size: 24pt;
+  margin: 0;
+}
+
+div.contactInfo {
+  display: flex;
+  gap: 20px;
+  font-size: 14px;
+}
+
+.edSection, .expSection {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  gap: 180px;
+}
+
+.edLeft, .expLeft {
+  display: flex;
+  flex-direction: column;
+  align-items: start;
+}
+
+.edLeft p, .expLeft p {
+  margin: 5px;
+}
+
+.edSchool, .expCompany {
+  font-weight: bold;
+}
+
+.section {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 40px;
+}
+
+.expRole {
+  display: flex;
+  flex-direction: column;
+  justify-content: baseline;
+  align-items: start;
+  margin-top: 10px;
+  font-size: 11pt;
 }
