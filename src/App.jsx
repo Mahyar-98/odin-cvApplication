@@ -9,25 +9,25 @@ import ShowSection from "./components/ShowSection.jsx";
 function CVApp() {
   const initialEducation = {
     id: 1,
-    edSchool: "",
-    edTitle: "",
-    edFrom: "",
-    edTo: "",
+    edSchool: "Example University",
+    edTitle: "B.Sc. of Computer Science",
+    edFrom: "2015-09-01",
+    edTo: "2019-05-31",
   };
 
   const initialExperience = {
-    expCompany: "",
-    expPosition: "",
-    expRole: "",
-    expFrom: "",
-    expTo: "",
+    expCompany: "Tech Solutions Inc.",
+    expPosition: "Software Engineer",
+    expRole: "Developing web applications, Collaborating with team members, Troubleshooting issues",
+    expFrom: "2020-02-01",
+    expTo: "2023-09-30",
   };
 
   const InitialFormData = {
-    firstName: "",
-    lastName: "",
-    email: "",
-    phone: "",
+    firstName: "John",
+    lastName: "Doe",
+    email: "john.doe@example.com",
+    phone: "555-123-4567",
     education: { 1: initialEducation },
     experience: { 1: initialExperience },
   };
