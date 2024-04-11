@@ -9,8 +9,8 @@ export default function InputField({
   handleInputChange,
 }) {
   return (
-    <label htmlFor={name}>
-      {label}
+    <div className="input-field">
+      <label htmlFor={name}>{label}</label>
       {type === "textarea" ? (
         <textarea
           name={name}
@@ -19,7 +19,7 @@ export default function InputField({
           onChange={(e) => handleInputChange(name, e.target.value)}
           cols="30"
           rows="5"
-          placeholder="Please provide the information comma separated"
+          placeholder="Please provide a list of comma separated responsibilities"
         />
       ) : (
         <input
@@ -29,8 +29,8 @@ export default function InputField({
           value={value}
           onChange={(e) => handleInputChange(name, e.target.value)}
         />
-      )}{" "}
-    </label>
+      )}
+    </div>
   );
 }
 

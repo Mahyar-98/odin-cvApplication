@@ -3,40 +3,37 @@ import PropTypes from "prop-types";
 
 export default function ShowSection({ type, list }) {
   const structureRoles = (text) => {
-    const rolesArr = text.split(",")
-    const roleItems = rolesArr.map(item => (
-      <li key={item}>
-        {item}
-      </li>
-    ))
-      return <ul className="expRole">{roleItems}</ul>
-  }
+    const rolesArr = text.split(",");
+    const roleItems = rolesArr.map((item) => <li key={item}>{item}</li>);
+    return <ul className="expRole">{roleItems}</ul>;
+  };
 
   const renderSectionDetails = (data) => {
     if (type === "education") {
       return (
         <div className="edSection">
-        <div className="edLeft">
-          <p className="edSchool">{data.edSchool}</p>
-          <p className="edTitle">{data.edTitle}</p>
+          <div className="first-line">
+            <p className="edSchool">{data.edSchool}</p>
+            <p className="edDate">
+              {data.edFrom} — {data.edTo}
+            </p>
           </div>
-          <p className="edDate">
-            {data.edFrom} to {data.edTo}
-          </p>
+            <p className="edTitle">{data.edTitle}</p>
         </div>
       );
     }
     if (type === "practical") {
       return (
         <div className="expSection">
-          <div className="expLeft">
-          <p className="expCompany">{data.expCompany}</p>
-          <p>{data.expPosition}</p>
-          {structureRoles(data.expRole)}
-          </div>
-          <p>
-            {data.expFrom} to {data.expTo}
+          <div className="first-line">
+            <p className="expCompany">{data.expCompany}</p>
+            <p className="expDate">
+            {data.expFrom} — {data.expTo}
           </p>
+          </div>
+            <p>{data.expPosition}</p>
+            {structureRoles(data.expRole)}
+
         </div>
       );
     }
